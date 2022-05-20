@@ -45,7 +45,7 @@ def return_data(dataset):
 st.title("Classifiers in Action")
 
 # Description
-st.text("Chose a Dataset and a Classifier in the sidebar. Input your values and get a prediction")
+st.text("Choose a Dataset and a Classifier in the sidebar. Input your values and get a prediction")
 
 #sidebar
 sideBar = st.sidebar
