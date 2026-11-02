@@ -1,8 +1,6 @@
+from ml import classifier as build_classifier
 import streamlit as st
 from sklearn.datasets import load_wine, load_breast_cancer, load_iris
-from  sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
@@ -11,14 +9,14 @@ import pandas as pd
 def getClassifier(classifier):
     if classifier == 'SVM':
         c = st.sidebar.slider(label='Choose value of C' , min_value=0.0001, max_value=10.0)
-        model = SVC(C=c)
+        model = build_classifier("SVM", C=c)
     elif classifier == 'KNN':
         neighbors = st.sidebar.slider(label='Choose Number of Neighbors',min_value=1,max_value=20)
-        model = KNeighborsClassifier(n_neighbors = neighbors)
+        model = build_classifier("KNN", n_neighbors=neighbors)
     else:
         max_depth = st.sidebar.slider('max_depth', 2, 10)
         n_estimators = st.sidebar.slider('n_estimators', 1, 100)
-        model = RandomForestClassifier(max_depth = max_depth , n_estimators= n_estimators,random_state= 1)
+        model = build_classifier("Random Forest", max_depth=max_depth, n_estimators=n_estimators)
     return model
 
 
@@ -38,7 +36,7 @@ def return_data(dataset):
         data = load_breast_cancer()
     df = pd.DataFrame(data.data, columns=data.feature_names , index=None)
     df['Type'] = data.target
-    X_train, X_test, y_train, y_test = train_test_split(data.data, data.target, random_state=1, test_size=0.2)
+    X_train, X_test, y_train, y_test = train_test_split(data.data, data.target, random_state=1, test_size=0.2, stratify=data.target)
     return X_train, X_test, y_train, y_test,df,data.target_names
 
 # Title
@@ -76,7 +74,7 @@ plt.title("2-D PCA Visualization")
 st.pyplot(fig)
 
 #3-D PCA
-fig2 = plt.figure(figsize=(16,10)).gca(projection='3d')
+fig2 = plt.figure(figsize=(16,10)).add_subplot(111, projection='3d')
 fig2.scatter(
     xs=df["pca-1"],
     ys=df["pca-2"],
