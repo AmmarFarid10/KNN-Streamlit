@@ -1,7 +1,5 @@
-matplotlib
-numpy
-Pillow
-scikit-image
-scikit-learn
-streamlit
-seaborn
+streamlit>=1.50,<2
+scikit-learn>=1.7,<2
+matplotlib>=3.10,<4
+seaborn>=0.13,<1
+pandas>=2.2,<3
